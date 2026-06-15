@@ -9,6 +9,16 @@ versionnement suit [SemVer](https://semver.org/lang/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **Colonne « Licence » unique** dans la liste utilisateurs : les 5 cases à cocher
+  exclusives sont remplacées par une **liste déroulante** (P1/P2/P3/P4a/P4b/partagée),
+  triable, avec cohérence Pack BeCloud conservée.
+- **Colonnes personnalisables** dans la liste : un sélecteur « ➕ Ajouter une colonne »
+  permet d'afficher **n'importe quel paramètre utilisateur** (email Microsoft, rôle,
+  téléphone, VIP, système, statut migration/communication, MFA, type/membres/alias de
+  boîte, boîtes liées, remarques, dates…). Chaque colonne ajoutée est retirable (×) et
+  la configuration est **mémorisée localement** (`localStorage`).
+- **Éditeur d'alias** dans la fiche utilisateur : ajout via champ + bouton et
+  suppression par puce (au lieu d'un champ texte séparé par « ; »).
 - **Suppression d'utilisateurs depuis la liste** : icône 🗑 par ligne (avec
   confirmation) et **suppression groupée** dans la barre d'édition en masse — en
   complément du bouton déjà présent dans le panneau de détail.

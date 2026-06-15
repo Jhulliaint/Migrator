@@ -5,5 +5,5 @@ import type { Risk } from "@/lib/types";
 export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
-  return NextResponse.json(upsertRisk((await req.json()) as Risk));
+  return NextResponse.json(await upsertRisk((await req.json()) as Risk));
 }

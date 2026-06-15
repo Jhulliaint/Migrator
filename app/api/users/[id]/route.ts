@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   const patch = (await req.json()) as Partial<User>;
   try {
-    const db = updateUser(params.id, patch);
+    const db = await updateUser(params.id, patch);
     return NextResponse.json(db);
   } catch (e) {
     return NextResponse.json({ error: (e as Error).message }, { status: 404 });
@@ -15,6 +15,6 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 }
 
 export async function DELETE(_req: NextRequest, { params }: { params: { id: string } }) {
-  const db = deleteUser(params.id);
+  const db = await deleteUser(params.id);
   return NextResponse.json(db);
 }

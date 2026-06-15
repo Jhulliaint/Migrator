@@ -5,9 +5,9 @@ import type { Task } from "@/lib/types";
 export const dynamic = "force-dynamic";
 
 export async function PATCH(req: NextRequest) {
-  return NextResponse.json(upsertTask((await req.json()) as Task));
+  return NextResponse.json(await upsertTask((await req.json()) as Task));
 }
 
 export async function DELETE(_req: NextRequest, { params }: { params: { id: string } }) {
-  return NextResponse.json(deleteTask(params.id));
+  return NextResponse.json(await deleteTask(params.id));
 }

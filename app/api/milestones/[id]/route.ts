@@ -6,5 +6,5 @@ export const dynamic = "force-dynamic";
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   const patch = (await req.json()) as Partial<Milestone>;
-  return NextResponse.json(updateMilestone(params.id, patch));
+  return NextResponse.json(await updateMilestone(params.id, patch));
 }

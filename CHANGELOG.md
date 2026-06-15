@@ -8,9 +8,24 @@ versionnement suit [SemVer](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
-Rien pour l'instant. Voir [`CHECKLIST.md`](./CHECKLIST.md) pour les évolutions prévues
-(Microsoft Graph en lecture, authentification, envoi réel des emails, migration
-documentaire Dropbox → OneDrive/SharePoint, profil Exchange Plan 2 100 Go…).
+### Modifié
+- **Persistance / déploiement Vercel** : la couche d'accès aux données
+  (`lib/data/store.ts`) gère désormais **deux back-ends derrière la même interface**,
+  choisis automatiquement : **Vercel KV (Redis)** quand `KV_REST_API_URL` +
+  `KV_REST_API_TOKEN` sont définis (état complet sous la clé `migrator:db`), sinon le
+  fichier local `data/db.json` (repli mémoire conservé). Résout la perte de données en
+  serverless (FS lecture seule, `/tmp` éphémère).
+- Interface du store rendue **asynchrone** (`getDb` / `saveDb` / `mutate` / `resetDb`
+  renvoient des `Promise`) ; `await` ajouté dans `lib/data/mutations.ts` et les routes
+  `app/api/*`. **Aucun changement** d'UI ni de règles métier (`lib/domain/`), qui ne
+  dépendent que de l'API REST.
+- `scripts/seed.mjs` : amorce **Vercel KV** quand il est configuré (sinon réinitialise
+  `data/db.json`). Section *Déploiement* du README réécrite (Vercel + KV).
+- Dépendance ajoutée : `@vercel/kv`.
+
+Voir [`CHECKLIST.md`](./CHECKLIST.md) pour les autres évolutions prévues (Microsoft
+Graph en lecture, authentification, envoi réel des emails, migration documentaire
+Dropbox → OneDrive/SharePoint, profil Exchange Plan 2 100 Go…).
 
 ## [1.1.0] — 2026-06-15
 

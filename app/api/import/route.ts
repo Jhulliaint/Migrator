@@ -7,5 +7,5 @@ export const dynamic = "force-dynamic";
 // Reçoit des utilisateurs déjà mappés (le mapping/parse a lieu côté client).
 export async function POST(req: NextRequest) {
   const { users, mode } = (await req.json()) as { users: User[]; mode: "merge" | "replace" };
-  return NextResponse.json(importUsers(users, mode ?? "merge"));
+  return NextResponse.json(await importUsers(users, mode ?? "merge"));
 }

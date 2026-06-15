@@ -5,9 +5,9 @@ import type { DistributionList } from "@/lib/types";
 export const dynamic = "force-dynamic";
 
 export async function PATCH(req: NextRequest) {
-  return NextResponse.json(upsertDistributionList((await req.json()) as DistributionList));
+  return NextResponse.json(await upsertDistributionList((await req.json()) as DistributionList));
 }
 
 export async function DELETE(_req: NextRequest, { params }: { params: { id: string } }) {
-  return NextResponse.json(deleteDistributionList(params.id));
+  return NextResponse.json(await deleteDistributionList(params.id));
 }

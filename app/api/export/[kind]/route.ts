@@ -144,7 +144,7 @@ function migrationXlsx(db: Database): NextResponse {
 }
 
 export async function GET(_req: NextRequest, { params }: { params: { kind: string } }) {
-  const db = getDb();
+  const db = await getDb();
   switch (params.kind) {
     case "users-csv":
       return usersCsv(db);

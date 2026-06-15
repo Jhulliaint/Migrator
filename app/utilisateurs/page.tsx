@@ -1,7 +1,7 @@
 "use client";
 import React, { useMemo, useState } from "react";
 import { WithDb, PageTitle } from "@/components/ui/page";
-import { Card, Badge, StatusBadge, Checkbox, Select, Button, TextInput, useSort, Th, riskTone } from "@/components/ui/primitives";
+import { Card, Badge, Checkbox, Select, Button, TextInput, useSort, Th, riskTone } from "@/components/ui/primitives";
 import { SiteLink } from "@/components/inspector/links";
 import { useData } from "@/lib/store-client";
 import { useInspector } from "@/lib/inspector";
@@ -20,12 +20,14 @@ const TIERS: { code: LicenseCode; label: string }[] = [
   { code: "P1", label: "Business" },
 ];
 
+const ACCOUNT_STATUSES = ["actif", "ancien salarié", "boîte de service", "boîte technique", "à arbitrer"] as const;
+
 export default function UsersPage() {
   return <WithDb>{(db) => <UsersInner db={db} />}</WithDb>;
 }
 
 function UsersInner({ db }: { db: Database }) {
-  const { patchUser } = useData();
+  const { patchUser, deleteUser } = useData();
   const { inspectUser } = useInspector();
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [q, setQ] = useState("");
@@ -119,6 +121,7 @@ function UsersInner({ db }: { db: Database }) {
               <th className="text-center">Risque</th>
               <th className="text-center">⚠</th>
               <th>Coût/mois</th>
+              <th className="text-center" title="Supprimer">Suppr.</th>
             </tr>
           </thead>
           <tbody>
@@ -138,7 +141,9 @@ function UsersInner({ db }: { db: Database }) {
                   </td>
                   <td className="cursor-pointer" onClick={() => inspectUser(u.id)}>{u.lastName}</td>
                   <td className="text-slate-500">{u.googleEmail}</td>
-                  <td><StatusBadge value={u.status} /></td>
+                  <td onClick={(e) => e.stopPropagation()}>
+                    <Select value={u.status} options={ACCOUNT_STATUSES} onChange={(v) => patchUser(u.id, { status: v as User["status"] })} className="w-full" />
+                  </td>
                   <td><SiteLink site={u.site} /></td>
                   <td className="text-slate-500">{dateFr(u.lastGoogleSignIn)}</td>
                   <td className="text-right">
@@ -156,6 +161,13 @@ function UsersInner({ db }: { db: Database }) {
                   <td className="text-center"><Badge tone={riskTone(u.risk)}>{u.risk}</Badge></td>
                   <td className="text-center">{err ? <span title={issues.map((i) => i.message).join("\n")} className="cursor-help text-statusRed">⚠</span> : issues.length ? <span title={issues.map((i) => i.message).join("\n")} className="cursor-help text-statusOrange">●</span> : <span className="text-slate-300">—</span>}</td>
                   <td className="font-medium">{eur(userMonthlyTotal(u, db.licenseTypes))}</td>
+                  <td className="text-center" onClick={(e) => e.stopPropagation()}>
+                    <button
+                      title={`Supprimer ${u.firstName} ${u.lastName}`}
+                      className="rounded px-1.5 py-0.5 text-statusRed hover:bg-red-50"
+                      onClick={() => { if (confirm(`Supprimer définitivement le compte « ${u.firstName} ${u.lastName} » (${u.googleEmail}) ?`)) deleteUser(u.id); }}
+                    >🗑</button>
+                  </td>
                 </tr>
               );
             })}
@@ -168,7 +180,7 @@ function UsersInner({ db }: { db: Database }) {
 }
 
 function BulkBar({ db, ids, onClear }: { db: Database; ids: string[]; onClear: () => void }) {
-  const { patchUser } = useData();
+  const { patchUser, deleteUser } = useData();
   const apply = async (patch: Partial<User>) => {
     for (const id of ids) {
       const u = db.users.find((x) => x.id === id);
@@ -179,12 +191,20 @@ function BulkBar({ db, ids, onClear }: { db: Database; ids: string[]; onClear: (
       await patchUser(id, p);
     }
   };
+  const bulkDelete = async () => {
+    if (!confirm(`Supprimer définitivement ${ids.length} compte(s) ? Cette action est irréversible.`)) return;
+    for (const id of ids) await deleteUser(id);
+    onClear();
+  };
   return (
     <div className="mb-3 flex flex-wrap items-center gap-2 rounded-lg border border-navy-200 bg-navy-50 px-3 py-2 text-xms">
       <span className="font-semibold text-navy-800">{ids.length} sélectionné(s) — édition en masse :</span>
       <Select value={"" as string} options={[{ value: "", label: "Profil licence…" }, { value: "P1", label: "P1 Business" }, { value: "P2", label: "P2 F3+Exch" }, { value: "P3", label: "P3 F3" }, { value: "P4a", label: "P4a Plan 1" }, { value: "P4b", label: "P4b Kiosk" }, { value: "SHARED", label: "Boîte partagée" }]} onChange={(v) => v && apply({ licenseProfile: v as LicenseCode })} />
+      <Select value={"" as string} options={[{ value: "", label: "Statut compte…" }, ...ACCOUNT_STATUSES.map((s) => ({ value: s, label: s }))]} onChange={(v) => v && apply({ status: v as User["status"] })} />
       <Select value={"" as string} options={[{ value: "", label: "Migration…" }, { value: "copie lancée", label: "Copie lancée" }, { value: "copié", label: "Copié" }, { value: "basculé", label: "Basculé" }, { value: "reconnecté", label: "Reconnecté" }, { value: "validé", label: "Validé" }]} onChange={(v) => v && apply({ mailStatus: v as User["mailStatus"] })} />
+      <Select value={"" as string} options={[{ value: "", label: "Risque…" }, { value: "vert", label: "Vert" }, { value: "orange", label: "Orange" }, { value: "rouge", label: "Rouge" }]} onChange={(v) => v && apply({ risk: v as User["risk"] })} />
       <Select value={"" as string} options={[{ value: "", label: "Engagement…" }, { value: "annuel", label: "Annuel" }, { value: "mensuel", label: "Mensuel" }]} onChange={(v) => v && apply({ engagement: v as User["engagement"] })} />
+      <Button variant="danger" onClick={bulkDelete}>🗑 Supprimer ({ids.length})</Button>
       <Button variant="ghost" onClick={onClear}>Effacer la sélection</Button>
     </div>
   );

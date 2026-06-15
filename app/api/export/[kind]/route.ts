@@ -35,13 +35,15 @@ function usersCsv(db: Database): NextResponse {
   const header = [
     "Prénom", "Nom", "Email Google", "Email Microsoft", "Statut", "Site",
     "Dernière connexion", "Taille boîte (Go)", "Profil", "Pack BeCloud",
-    "Coût €/mois", "MFA", "Statut migration", "Risque",
+    "Coût €/mois", "MFA", "Statut migration", "Connexion MS", "Apps Office",
+    "Comptes gérés", "Risque",
   ];
   const rows = db.users.map((u) => [
     u.firstName, u.lastName, u.googleEmail, u.microsoftEmail, u.status, u.site,
     u.lastGoogleSignIn ?? "", u.mailboxSizeGB, u.licenseProfile,
     u.packBeCloud ? "Oui" : "Non", userMonthlyTotal(u, db.licenseTypes),
-    u.mfa.status, u.mailStatus, u.risk,
+    u.mfa.status, u.mailStatus, u.msAccountStatus, u.officeApps.join(" / "),
+    u.linkedMailboxes.join("; "), u.risk,
   ]);
   return csvResponse([header, ...rows], "utilisateurs.csv");
 }
@@ -57,7 +59,9 @@ function pilotageXlsx(db: Database): NextResponse {
     "Pack €/mois": packBeCloudCost(u, db.licenseTypes),
     "Total €/mois": userMonthlyTotal(u, db.licenseTypes),
     "Total €/an": userAnnualTotal(u, db.licenseTypes),
-    MFA: u.mfa.status, Migration: u.mailStatus, Communication: u.commStatus, Risque: u.risk,
+    MFA: u.mfa.status, Migration: u.mailStatus, "Connexion MS": u.msAccountStatus,
+    "Apps Office": u.officeApps.join(" / "), "Comptes gérés": u.linkedMailboxes.join("; "),
+    Communication: u.commStatus, Risque: u.risk,
   }));
   XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(usersSheet), "Utilisateurs");
   XLSX.utils.book_append_sheet(

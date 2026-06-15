@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import type { Database, User, LicenseCode } from "@/lib/types";
+import type { Database, User, LicenseCode, OfficeApp } from "@/lib/types";
 import { SidePanel, Field, Select, Checkbox, TextInput, Button, Badge, StatusBadge } from "@/components/ui/primitives";
 import { useData } from "@/lib/store-client";
 import { userMonthlyTotal, userAnnualTotal } from "@/lib/domain/licensing";
@@ -17,6 +17,9 @@ const LICENSE_OPTS: { value: LicenseCode; label: string }[] = [
   { value: "P4b", label: "P4b · Exchange Kiosk (2 Go)" },
   { value: "SHARED", label: "Boîte partagée (gratuite)" },
 ];
+
+const MS_ACCOUNT_STATUSES = ["à prévenir", "mot de passe envoyé", "première connexion faite", "connexion confirmée", "bloqué"] as const;
+const OFFICE_APPS: OfficeApp[] = ["Outlook", "Word", "Excel", "PowerPoint", "Teams", "OneDrive", "SharePoint", "OneNote"];
 
 export function UserDetailPanel({ db, userId, onClose, onBack }: { db: Database; userId: string | null; onClose: () => void; onBack?: () => void }) {
   const { patchUser, deleteUser } = useData();
@@ -72,6 +75,12 @@ export function UserDetailPanel({ db, userId, onClose, onBack }: { db: Database;
           <>
             <span className="text-slate-500">Membres :</span>
             {draft.mailbox.members.map((m) => <UserLink key={m} email={m}>{m}</UserLink>)}
+          </>
+        )}
+        {draft.linkedMailboxes.length > 0 && (
+          <>
+            <span className="text-slate-500">Gère :</span>
+            {draft.linkedMailboxes.map((m) => <UserLink key={m} email={m}>{m}</UserLink>)}
           </>
         )}
       </div>
@@ -158,6 +167,26 @@ export function UserDetailPanel({ db, userId, onClose, onBack }: { db: Database;
         <Field label="Statut communication"><Select value={draft.commStatus} options={["non démarré", "email envoyé", "relancé", "confirmé"] as const} onChange={(v) => set("commStatus", v)} className="w-full" /></Field>
       </Section>
 
+      <Section title="Compte Microsoft & applications">
+        <Field label="Statut de connexion au compte Microsoft">
+          <Select value={draft.msAccountStatus} options={MS_ACCOUNT_STATUSES} onChange={(v) => set("msAccountStatus", v)} className="w-full" />
+        </Field>
+        <Field label="Applications Office utilisées">
+          <div className="flex flex-wrap gap-x-3 gap-y-0.5">
+            {OFFICE_APPS.map((app) => (
+              <Toggle key={app} label={app} v={draft.officeApps.includes(app)} on={(b) => set("officeApps", b ? [...draft.officeApps, app] : draft.officeApps.filter((a) => a !== app))} />
+            ))}
+          </div>
+        </Field>
+      </Section>
+
+      {draft.physicalUser && (
+        <Section title="Comptes non humains gérés / accès">
+          <p className="mb-1 text-[0.7rem] text-slate-500">Boîtes partagées, de service ou techniques que cette personne gère ou auxquelles elle a accès.</p>
+          <ManagedAccountsEditor db={db} value={draft.linkedMailboxes} onChange={(next) => set("linkedMailboxes", next)} />
+        </Section>
+      )}
+
       <Section title="Risque & remarques">
         <Field label="Statut risque"><Select value={draft.risk} options={[{ value: "vert", label: "Vert" }, { value: "orange", label: "Orange" }, { value: "rouge", label: "Rouge" }] as const} onChange={(v) => set("risk", v)} className="w-full" /></Field>
         <Field label="Remarques"><textarea value={draft.remarks} onChange={(e) => set("remarks", e.target.value)} rows={3} className="w-full rounded border border-slate-300 px-2 py-1 text-xms outline-none focus:border-navy-600" /></Field>
@@ -172,6 +201,35 @@ function Section({ title, children }: { title: string; children: React.ReactNode
     <div className="mb-4">
       <h4 className="mb-2 border-b border-slate-200 pb-1 text-xms font-semibold uppercase tracking-wide text-navy-700">{title}</h4>
       {children}
+    </div>
+  );
+}
+
+/** Sélection des comptes non humains (boîtes partagées/service/technique) gérés par un humain. */
+function ManagedAccountsEditor({ db, value, onChange }: { db: Database; value: string[]; onChange: (next: string[]) => void }) {
+  const accounts = db.users
+    .filter((u) => !u.physicalUser || u.mailbox.typeTarget === "boîte partagée" || u.licenseProfile === "SHARED")
+    .sort((a, b) => a.googleEmail.localeCompare(b.googleEmail));
+  const known = new Set(accounts.map((u) => u.googleEmail));
+  const extra = value.filter((e) => !known.has(e)); // comptes liés hors référentiel (ex. externes)
+  const toggle = (email: string, on: boolean) => onChange(on ? [...value, email] : value.filter((e) => e !== email));
+  return (
+    <div className="max-h-48 space-y-0.5 overflow-y-auto rounded border border-slate-200 p-1.5">
+      {accounts.length === 0 && extra.length === 0 && <span className="text-xms text-slate-400">Aucun compte non humain au référentiel.</span>}
+      {accounts.map((u) => (
+        <label key={u.id} className="flex items-center gap-2 py-0.5 text-xms text-slate-700">
+          <Checkbox checked={value.includes(u.googleEmail)} onChange={(b) => toggle(u.googleEmail, b)} />
+          <span className="font-medium text-navy-800">{u.googleEmail}</span>
+          <span className="truncate text-slate-400">{`${u.firstName} ${u.lastName}`.trim()}</span>
+        </label>
+      ))}
+      {extra.map((e) => (
+        <label key={e} className="flex items-center gap-2 py-0.5 text-xms text-slate-700">
+          <Checkbox checked onChange={() => toggle(e, false)} />
+          <span className="font-medium text-navy-800">{e}</span>
+          <span className="text-slate-400">(hors référentiel)</span>
+        </label>
+      ))}
     </div>
   );
 }

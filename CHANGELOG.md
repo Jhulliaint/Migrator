@@ -9,6 +9,19 @@ versionnement suit [SemVer](https://semver.org/lang/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **Statut de connexion au compte Microsoft** (`msAccountStatus`) : nouveau suivi
+  d'activation par utilisateur — *à prévenir → mot de passe envoyé → première connexion
+  faite → connexion confirmée → bloqué*. Éditable dans la fiche, en colonne sur la page
+  **Migration**, en édition de masse et en colonne personnalisable ; tracé dans l'audit
+  et exporté (CSV / XLSX pilotage). *(Aucun mot de passe n'est stocké : seul l'état du
+  workflow est suivi.)*
+- **Applications Office utilisées** (`officeApps`) par utilisateur (Outlook, Word, Excel,
+  PowerPoint, Teams, OneDrive, SharePoint, OneNote) : sélection dans la fiche, colonne
+  personnalisable et export. Valeurs initiales déduites du profil de licence.
+- **Comptes non humains gérés / accès** : sur la fiche d'un utilisateur **humain**, une
+  liste cochable des boîtes partagées / de service / techniques qu'il gère ou auxquelles
+  il a accès (champ `linkedMailboxes`, relation inverse des membres de boîte partagée).
+  Affiché aussi dans le bandeau « Relations » (liens cliquables) et en colonne.
 - **Colonne « Licence » unique** dans la liste utilisateurs : les 5 cases à cocher
   exclusives sont remplacées par une **liste déroulante** (P1/P2/P3/P4a/P4b/partagée),
   triable, avec cohérence Pack BeCloud conservée.

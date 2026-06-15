@@ -18,6 +18,7 @@ import { mutate, appendAudit } from "@/lib/data/store";
 const AUDITED_USER_FIELDS: { key: keyof User; label: string }[] = [
   { key: "licenseProfile", label: "licence" },
   { key: "mailStatus", label: "statut migration" },
+  { key: "msAccountStatus", label: "statut compte Microsoft" },
   { key: "mailboxSizeGB", label: "taille boîte" },
   { key: "status", label: "statut compte" },
   { key: "risk", label: "risque" },

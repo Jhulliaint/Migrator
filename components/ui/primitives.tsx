@@ -45,6 +45,9 @@ const STATUS_TONES: Record<string, Tone> = {
   "configurée SMS": "green", "bloquée": "red",
   // comm
   "non démarré": "gray", "email envoyé": "blue", "relancé": "orange", "confirmé": "green",
+  // connexion compte Microsoft ("bloqué" déjà défini ci-dessus)
+  "à prévenir": "gray", "mot de passe envoyé": "blue", "première connexion faite": "orange",
+  "connexion confirmée": "green",
   // task ("à faire" déjà défini ci-dessus)
   "en cours": "blue", "bloqué": "red", "terminé": "green", "annulé": "gray",
   // priority / severity

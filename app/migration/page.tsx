@@ -4,11 +4,12 @@ import { WithDb, PageTitle } from "@/components/ui/page";
 import { Card, KpiCard, Badge, Select, useSort, Th, TextInput, Checkbox } from "@/components/ui/primitives";
 import { useData } from "@/lib/store-client";
 import { UserLink } from "@/components/inspector/links";
-import type { Database, MailMigrationStatus } from "@/lib/types";
+import type { Database, MailMigrationStatus, MsAccountStatus } from "@/lib/types";
 import { readinessKpis } from "@/lib/domain/timeline";
 import { dateFr } from "@/lib/format";
 
 const STEPS: MailMigrationStatus[] = ["non commencé", "copie lancée", "copié", "basculé", "reconnecté", "validé", "problème"];
+const MS_STATUSES: MsAccountStatus[] = ["à prévenir", "mot de passe envoyé", "première connexion faite", "connexion confirmée", "bloqué"];
 
 export default function MigrationPage() {
   return <WithDb>{(db) => <Inner db={db} />}</WithDb>;
@@ -77,6 +78,7 @@ function Inner({ db }: { db: Database }) {
               <th>Statut migration</th>
               <th className="text-center">Reconnecté</th>
               <th className="text-center">Validé</th>
+              <th>Connexion MS</th>
               <th>Communication</th>
               <th>Dern. cnx Google</th>
             </tr>
@@ -92,6 +94,7 @@ function Inner({ db }: { db: Database }) {
                 <td><Select value={u.mailStatus} options={STEPS} onChange={(v) => patchUser(u.id, { mailStatus: v })} /></td>
                 <td className="text-center">{u.mailStatus === "reconnecté" || u.mailStatus === "validé" ? <Badge tone="green">✓</Badge> : <Badge tone="gray">—</Badge>}</td>
                 <td className="text-center">{u.mailStatus === "validé" ? <Badge tone="green">✓</Badge> : <Badge tone="gray">—</Badge>}</td>
+                <td><Select value={u.msAccountStatus} options={MS_STATUSES} onChange={(v) => patchUser(u.id, { msAccountStatus: v })} /></td>
                 <td><Badge tone={u.commStatus === "confirmé" ? "green" : u.commStatus === "non démarré" ? "gray" : "blue"}>{u.commStatus}</Badge></td>
                 <td className="text-slate-500">{dateFr(u.lastGoogleSignIn)}</td>
               </tr>

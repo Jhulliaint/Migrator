@@ -22,6 +22,7 @@ const LICENSE_OPTS: { value: LicenseCode; label: string }[] = [
 ];
 
 const ACCOUNT_STATUSES = ["actif", "ancien salarié", "boîte de service", "boîte technique", "à arbitrer"] as const;
+const MS_ACCOUNT_STATUSES = ["à prévenir", "mot de passe envoyé", "première connexion faite", "connexion confirmée", "bloqué"] as const;
 
 // Champs utilisateur mappables sur une colonne personnalisable de la liste.
 type MappableField = { key: string; label: string; get: (u: User) => React.ReactNode };
@@ -38,6 +39,8 @@ const MAPPABLE_FIELDS: MappableField[] = [
   { key: "cleanupRequested", label: "Nettoyage demandé", get: (u) => oui(u.cleanupRequested) },
   { key: "cleanupDone", label: "Nettoyage fait", get: (u) => oui(u.cleanupDone) },
   { key: "mailStatus", label: "Statut migration", get: (u) => u.mailStatus },
+  { key: "msAccountStatus", label: "Compte MS · connexion", get: (u) => u.msAccountStatus },
+  { key: "officeApps", label: "Apps Office", get: (u) => u.officeApps.join(", ") || "—" },
   { key: "commStatus", label: "Statut communication", get: (u) => u.commStatus },
   { key: "engagement", label: "Engagement", get: (u) => u.engagement },
   { key: "payment", label: "Paiement", get: (u) => u.payment },
@@ -48,7 +51,7 @@ const MAPPABLE_FIELDS: MappableField[] = [
   { key: "typeTarget", label: "Boîte · type cible", get: (u) => u.mailbox.typeTarget },
   { key: "members", label: "Boîte · membres", get: (u) => u.mailbox.members.length || "—" },
   { key: "alias", label: "Boîte · alias", get: (u) => u.mailbox.alias.join(", ") || "—" },
-  { key: "linkedMailboxes", label: "Boîtes liées", get: (u) => u.linkedMailboxes.length || "—" },
+  { key: "linkedMailboxes", label: "Comptes non humains gérés", get: (u) => u.linkedMailboxes.join(", ") || "—" },
   { key: "remarks", label: "Remarques", get: (u) => u.remarks || "—" },
   { key: "updatedAt", label: "Modifié le", get: (u) => dateFr(u.updatedAt) },
 ];
@@ -263,6 +266,7 @@ function BulkBar({ db, ids, onClear }: { db: Database; ids: string[]; onClear: (
       <Select value={"" as string} options={[{ value: "", label: "Profil licence…" }, { value: "P1", label: "P1 Business" }, { value: "P2", label: "P2 F3+Exch" }, { value: "P3", label: "P3 F3" }, { value: "P4a", label: "P4a Plan 1" }, { value: "P4b", label: "P4b Kiosk" }, { value: "SHARED", label: "Boîte partagée" }]} onChange={(v) => v && apply({ licenseProfile: v as LicenseCode })} />
       <Select value={"" as string} options={[{ value: "", label: "Statut compte…" }, ...ACCOUNT_STATUSES.map((s) => ({ value: s, label: s }))]} onChange={(v) => v && apply({ status: v as User["status"] })} />
       <Select value={"" as string} options={[{ value: "", label: "Migration…" }, { value: "copie lancée", label: "Copie lancée" }, { value: "copié", label: "Copié" }, { value: "basculé", label: "Basculé" }, { value: "reconnecté", label: "Reconnecté" }, { value: "validé", label: "Validé" }]} onChange={(v) => v && apply({ mailStatus: v as User["mailStatus"] })} />
+      <Select value={"" as string} options={[{ value: "", label: "Connexion MS…" }, ...MS_ACCOUNT_STATUSES.map((s) => ({ value: s, label: s }))]} onChange={(v) => v && apply({ msAccountStatus: v as User["msAccountStatus"] })} />
       <Select value={"" as string} options={[{ value: "", label: "Risque…" }, { value: "vert", label: "Vert" }, { value: "orange", label: "Orange" }, { value: "rouge", label: "Rouge" }]} onChange={(v) => v && apply({ risk: v as User["risk"] })} />
       <Select value={"" as string} options={[{ value: "", label: "Engagement…" }, { value: "annuel", label: "Annuel" }, { value: "mensuel", label: "Mensuel" }]} onChange={(v) => v && apply({ engagement: v as User["engagement"] })} />
       <Button variant="danger" onClick={bulkDelete}>🗑 Supprimer ({ids.length})</Button>

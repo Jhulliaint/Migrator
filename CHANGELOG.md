@@ -8,6 +8,12 @@ versionnement suit [SemVer](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+Rien pour l'instant. Voir [`CHECKLIST.md`](./CHECKLIST.md) pour les évolutions prévues
+(Microsoft Graph en lecture, authentification, envoi réel des emails, migration
+documentaire Dropbox → OneDrive/SharePoint, profil Exchange Plan 2 100 Go…).
+
+## [1.1.0] — 2026-06-15
+
 ### Ajouté
 - **Hyper-connectivité** : un inspecteur global (panneau latéral + pile de navigation
   avec bouton retour) permet de cliquer n'importe quelle référence d'entité pour ouvrir
@@ -22,6 +28,8 @@ versionnement suit [SemVer](https://semver.org/lang/fr/).
 ### Documentation
 - README détaillé (présentation, écrans, règles métier, architecture, API, tests,
   déploiement) et ce CHANGELOG.
+- `CLAUDE.md` (notes projet / préférences de conception, dont l'hyper-connectivité) et
+  `CHECKLIST.md` (éléments laissés à brancher en V2).
 
 ## [1.0.0] — 2026-06-14
 
@@ -86,5 +94,6 @@ Première version (MVP fonctionnel et autonome). Remplace le suivi Excel
   (qui ne les chiffrait pas).
 - Fournisseur DNS par défaut : Gandi (paramétrable).
 
-[Non publié]: https://github.com/Jhulliaint/Clique-UP/tree/claude/compassionate-bardeen-upxf7x/becloud
-[1.0.0]: https://github.com/Jhulliaint/Clique-UP/tree/claude/compassionate-bardeen-upxf7x/becloud
+[Non publié]: https://github.com/Jhulliaint/Migrator
+[1.1.0]: https://github.com/Jhulliaint/Migrator
+[1.0.0]: https://github.com/Jhulliaint/Migrator

@@ -130,10 +130,8 @@ export function UserDetailPanel({ db, userId, onClose, onBack }: { db: Database;
           <Toggle label="Signature auto" v={draft.mailbox.autoSignature} on={(b) => setMbx({ autoSignature: b })} />
         </div>
         <Field label="Membres autorisés (séparés par ;)"><TextInput value={draft.mailbox.members.join("; ")} onChange={(v) => setMbx({ members: v.split(";").map((s) => s.trim()).filter(Boolean) })} className="w-full" /></Field>
-        <div className="grid grid-cols-2 gap-2">
-          <Field label="Droits membres"><Select value={draft.mailbox.memberRight} options={["lecture seule", "accès complet", "envoyer en tant que"] as const} onChange={(v) => setMbx({ memberRight: v })} className="w-full" /></Field>
-          <Field label="Alias (séparés par ;)"><TextInput value={draft.mailbox.alias.join("; ")} onChange={(v) => setMbx({ alias: v.split(";").map((s) => s.trim()).filter(Boolean) })} className="w-full" /></Field>
-        </div>
+        <Field label="Droits membres"><Select value={draft.mailbox.memberRight} options={["lecture seule", "accès complet", "envoyer en tant que"] as const} onChange={(v) => setMbx({ memberRight: v })} className="w-full" /></Field>
+        <Field label="Alias de la boîte"><AliasEditor value={draft.mailbox.alias} onChange={(next) => setMbx({ alias: next })} /></Field>
       </Section>
 
       <Section title="Licence">
@@ -174,6 +172,34 @@ function Section({ title, children }: { title: string; children: React.ReactNode
     <div className="mb-4">
       <h4 className="mb-2 border-b border-slate-200 pb-1 text-xms font-semibold uppercase tracking-wide text-navy-700">{title}</h4>
       {children}
+    </div>
+  );
+}
+
+/** Édition d'une liste d'alias : ajout via champ + bouton, suppression par puce. */
+function AliasEditor({ value, onChange }: { value: string[]; onChange: (next: string[]) => void }) {
+  const [input, setInput] = useState("");
+  const add = () => {
+    const a = input.trim().toLowerCase();
+    if (!a) return;
+    if (!value.includes(a)) onChange([...value, a]);
+    setInput("");
+  };
+  return (
+    <div>
+      <div className="mb-1 flex flex-wrap gap-1">
+        {value.length === 0 && <span className="text-xms text-slate-400">Aucun alias.</span>}
+        {value.map((a) => (
+          <span key={a} className="inline-flex items-center gap-1 rounded border border-navy-200 bg-navy-50 px-1.5 py-0.5 text-xms text-navy-800">
+            {a}
+            <button type="button" title="Retirer l'alias" onClick={() => onChange(value.filter((x) => x !== a))} className="leading-none text-slate-400 hover:text-statusRed">×</button>
+          </span>
+        ))}
+      </div>
+      <div className="flex gap-1">
+        <TextInput value={input} onChange={setInput} placeholder="nouvel.alias@corthay.com" className="w-full" />
+        <Button onClick={add}>+ Ajouter</Button>
+      </div>
     </div>
   );
 }

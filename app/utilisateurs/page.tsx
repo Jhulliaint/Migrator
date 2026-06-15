@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { WithDb, PageTitle } from "@/components/ui/page";
 import { Card, Badge, Checkbox, Select, Button, TextInput, useSort, Th, riskTone } from "@/components/ui/primitives";
 import { SiteLink } from "@/components/inspector/links";
@@ -11,16 +11,47 @@ import { userIssues, hasError } from "@/lib/domain/validation";
 import { storageStatus } from "@/lib/domain/storage";
 import { eur, dateFr } from "@/lib/format";
 
-// Cases « licence » façon Excel (exclusives) ↔ profil.
-const TIERS: { code: LicenseCode; label: string }[] = [
-  { code: "P4b", label: "2 Go" },
-  { code: "P4a", label: "50 Go" },
-  { code: "P3", label: "F3" },
-  { code: "P2", label: "F3+50" },
-  { code: "P1", label: "Business" },
+// Profils de licence présentés dans la liste déroulante de la colonne « Licence ».
+const LICENSE_OPTS: { value: LicenseCode; label: string }[] = [
+  { value: "P1", label: "P1 · Business Premium" },
+  { value: "P2", label: "P2 · F3 + Exch 50Go" },
+  { value: "P3", label: "P3 · M365 F3" },
+  { value: "P4a", label: "P4a · Exch Plan 1 50Go" },
+  { value: "P4b", label: "P4b · Exch Kiosk 2Go" },
+  { value: "SHARED", label: "Boîte partagée" },
 ];
 
 const ACCOUNT_STATUSES = ["actif", "ancien salarié", "boîte de service", "boîte technique", "à arbitrer"] as const;
+
+// Champs utilisateur mappables sur une colonne personnalisable de la liste.
+type MappableField = { key: string; label: string; get: (u: User) => React.ReactNode };
+const oui = (b: boolean) => (b ? "Oui" : "—");
+const MAPPABLE_FIELDS: MappableField[] = [
+  { key: "microsoftEmail", label: "Email Microsoft", get: (u) => u.microsoftEmail },
+  { key: "role", label: "Rôle métier", get: (u) => u.role || "—" },
+  { key: "phone", label: "Téléphone", get: (u) => u.phone || "—" },
+  { key: "vip", label: "VIP", get: (u) => oui(u.vip) },
+  { key: "physicalUser", label: "Utilisateur physique", get: (u) => oui(u.physicalUser) },
+  { key: "os", label: "Système", get: (u) => u.os },
+  { key: "usesMobile", label: "Mobile", get: (u) => oui(u.usesMobile) },
+  { key: "targetSizeGB", label: "Taille cible (Go)", get: (u) => u.targetSizeGB ?? "—" },
+  { key: "cleanupRequested", label: "Nettoyage demandé", get: (u) => oui(u.cleanupRequested) },
+  { key: "cleanupDone", label: "Nettoyage fait", get: (u) => oui(u.cleanupDone) },
+  { key: "mailStatus", label: "Statut migration", get: (u) => u.mailStatus },
+  { key: "commStatus", label: "Statut communication", get: (u) => u.commStatus },
+  { key: "engagement", label: "Engagement", get: (u) => u.engagement },
+  { key: "payment", label: "Paiement", get: (u) => u.payment },
+  { key: "packBeCloud", label: "Pack BeCloud", get: (u) => oui(u.packBeCloud) },
+  { key: "mfaStatus", label: "MFA · statut", get: (u) => u.mfa.status },
+  { key: "mfaMethod", label: "MFA · méthode", get: (u) => u.mfa.method },
+  { key: "typeCurrent", label: "Boîte · type actuel", get: (u) => u.mailbox.typeCurrent },
+  { key: "typeTarget", label: "Boîte · type cible", get: (u) => u.mailbox.typeTarget },
+  { key: "members", label: "Boîte · membres", get: (u) => u.mailbox.members.length || "—" },
+  { key: "alias", label: "Boîte · alias", get: (u) => u.mailbox.alias.join(", ") || "—" },
+  { key: "linkedMailboxes", label: "Boîtes liées", get: (u) => u.linkedMailboxes.length || "—" },
+  { key: "remarks", label: "Remarques", get: (u) => u.remarks || "—" },
+  { key: "updatedAt", label: "Modifié le", get: (u) => dateFr(u.updatedAt) },
+];
 
 export default function UsersPage() {
   return <WithDb>{(db) => <UsersInner db={db} />}</WithDb>;
@@ -37,6 +68,16 @@ function UsersInner({ db }: { db: Database }) {
   const [onlyBig, setOnlyBig] = useState(false);
   const [onlyIssues, setOnlyIssues] = useState(false);
   const [onlyVip, setOnlyVip] = useState(false);
+  // Colonnes personnalisables (mappées sur un champ utilisateur), persistées localement.
+  const [customCols, setCustomCols] = useState<string[]>([]);
+  useEffect(() => {
+    try { const s = localStorage.getItem("migrator.users.customCols"); if (s) setCustomCols(JSON.parse(s)); } catch { /* ignore */ }
+  }, []);
+  useEffect(() => {
+    try { localStorage.setItem("migrator.users.customCols", JSON.stringify(customCols)); } catch { /* ignore */ }
+  }, [customCols]);
+  const addColumn = (key: string) => setCustomCols((c) => (c.includes(key) ? c : [...c, key]));
+  const removeColumn = (key: string) => setCustomCols((c) => c.filter((k) => k !== key));
 
   const sites = useMemo(() => Array.from(new Set(db.users.map((u) => u.site))).sort(), [db.users]);
 
@@ -95,6 +136,12 @@ function UsersInner({ db }: { db: Database }) {
           <label className="flex items-center gap-1 text-xms text-slate-600"><Checkbox checked={onlyBig} onChange={setOnlyBig} /> &gt; 50 Go</label>
           <label className="flex items-center gap-1 text-xms text-slate-600"><Checkbox checked={onlyVip} onChange={setOnlyVip} /> VIP</label>
           <label className="flex items-center gap-1 text-xms text-slate-600"><Checkbox checked={onlyIssues} onChange={setOnlyIssues} /> Incohérences</label>
+          <label className="text-xms text-slate-500">Colonne</label>
+          <Select
+            value=""
+            options={[{ value: "", label: "➕ Ajouter une colonne…" }, ...MAPPABLE_FIELDS.filter((f) => !customCols.includes(f.key)).map((f) => ({ value: f.key, label: f.label }))]}
+            onChange={(v) => v && addColumn(v)}
+          />
           <span className="ml-auto text-xms text-slate-500">{sorted.length} résultat(s)</span>
         </div>
       </Card>
@@ -113,7 +160,7 @@ function UsersInner({ db }: { db: Database }) {
               <Th label="Site" sortKey="site" sort={sort} />
               <Th label="Dern. cnx" sortKey="lastGoogleSignIn" sort={sort} />
               <Th label="Go" sortKey="mailboxSizeGB" sort={sort} className="text-right" />
-              {TIERS.map((t) => <th key={t.code} className="text-center">{t.label}</th>)}
+              <Th label="Licence" sortKey="licenseProfile" sort={sort} />
               <th className="text-center">Pack</th>
               <th className="text-center">MFA</th>
               <th className="text-center" title="Outlook Web">OWA</th>
@@ -121,6 +168,18 @@ function UsersInner({ db }: { db: Database }) {
               <th className="text-center">Risque</th>
               <th className="text-center">⚠</th>
               <th>Coût/mois</th>
+              {customCols.map((ck) => {
+                const f = MAPPABLE_FIELDS.find((x) => x.key === ck);
+                if (!f) return null;
+                return (
+                  <th key={ck} className="whitespace-nowrap">
+                    <span className="inline-flex items-center gap-1">
+                      {f.label}
+                      <button title="Retirer la colonne" onClick={() => removeColumn(ck)} className="text-slate-400 hover:text-statusRed">×</button>
+                    </span>
+                  </th>
+                );
+              })}
               <th className="text-center" title="Supprimer">Suppr.</th>
             </tr>
           </thead>
@@ -149,11 +208,9 @@ function UsersInner({ db }: { db: Database }) {
                   <td className="text-right">
                     <span className={ss === "critique" ? "font-bold text-statusRed" : ss === "élevé" ? "font-semibold text-statusOrange" : ss === "à surveiller" ? "text-statusOrange" : ""}>{u.mailboxSizeGB}</span>
                   </td>
-                  {TIERS.map((t) => (
-                    <td key={t.code} className="text-center">
-                      <Checkbox checked={u.licenseProfile === t.code} onChange={() => setProfile(u, t.code)} />
-                    </td>
-                  ))}
+                  <td onClick={(e) => e.stopPropagation()}>
+                    <Select value={u.licenseProfile} options={LICENSE_OPTS} onChange={(v) => setProfile(u, v as LicenseCode)} className="w-full" />
+                  </td>
                   <td className="text-center"><Checkbox checked={u.packBeCloud} disabled={u.licenseProfile !== "P1"} onChange={(b) => patchUser(u.id, { packBeCloud: b })} /></td>
                   <td className="text-center"><Badge tone={u.mfa.configured ? "green" : u.mfa.blocked ? "red" : "orange"} title={u.mfa.status}>{u.mfa.configured ? "✓" : u.mfa.blocked ? "✕" : "…"}</Badge></td>
                   <td className="text-center"><Checkbox checked={u.usesOutlookWeb} onChange={(b) => patchUser(u.id, { usesOutlookWeb: b })} /></td>
@@ -161,6 +218,10 @@ function UsersInner({ db }: { db: Database }) {
                   <td className="text-center"><Badge tone={riskTone(u.risk)}>{u.risk}</Badge></td>
                   <td className="text-center">{err ? <span title={issues.map((i) => i.message).join("\n")} className="cursor-help text-statusRed">⚠</span> : issues.length ? <span title={issues.map((i) => i.message).join("\n")} className="cursor-help text-statusOrange">●</span> : <span className="text-slate-300">—</span>}</td>
                   <td className="font-medium">{eur(userMonthlyTotal(u, db.licenseTypes))}</td>
+                  {customCols.map((ck) => {
+                    const f = MAPPABLE_FIELDS.find((x) => x.key === ck);
+                    return <td key={ck} className="whitespace-nowrap text-slate-600">{f ? f.get(u) : "—"}</td>;
+                  })}
                   <td className="text-center" onClick={(e) => e.stopPropagation()}>
                     <button
                       title={`Supprimer ${u.firstName} ${u.lastName}`}

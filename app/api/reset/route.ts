@@ -5,5 +5,5 @@ export const dynamic = "force-dynamic";
 
 // Réinitialise les données de démonstration depuis le seed.
 export async function POST() {
-  return NextResponse.json(resetDb());
+  return NextResponse.json(await resetDb());
 }

@@ -170,7 +170,7 @@ ou **remplacement**.
 | --- | --- | --- |
 | Framework | **Next.js 14 (App Router) + TypeScript** | Un seul process (`npm run dev`) pour l'UI et l'API |
 | Style | **Tailwind CSS** + composants maison (façon shadcn/ui) | Sobre, dense, sans dépendance lourde |
-| Données | **Store JSON local** (`data/db.json`) | MVP simple, 100 % local, sans binaire à compiler (Prisma/SQLite) |
+| Données | **Store abstrait** : fichier `data/db.json` en local, **Vercel KV (Redis)** sur Vercel | Local sans binaire à compiler ; persistance partagée en production (voir §13) |
 | Import/Export | **SheetJS (`xlsx`)** | Lecture Excel, exports CSV/XLSX |
 | Graphiques | **SVG / CSS maison** | Aucune dépendance graphique externe |
 | Tests | **Vitest** | Règles licences / stockage / risques / emails |
@@ -199,10 +199,12 @@ Séparation stricte des responsabilités :
 └── test/                     tests Vitest
 ```
 
-> **Pourquoi un store JSON plutôt que SQLite/Prisma ?** Pour un MVP 100 % local sans
-> binaire à télécharger/compiler. La couche d'accès (`lib/data/store.ts`) est isolée
-> derrière une interface simple (`getDb` / `saveDb` / `mutate`) : on peut basculer vers
-> SQLite ou Postgres **sans toucher** à l'UI ni aux règles métier.
+> **Pourquoi un store « document » plutôt que SQLite/Prisma ?** Pour rester simple : un
+> seul objet `Database` lu/écrit en bloc. La couche d'accès (`lib/data/store.ts`) est
+> isolée derrière une interface **asynchrone** (`getDb` / `saveDb` / `mutate`) qui
+> choisit son back-end selon l'environnement (fichier local ou Vercel KV) — **sans
+> toucher** à l'UI ni aux règles métier (`lib/domain/`), qui ne dépendent que de l'API
+> REST. On pourrait y brancher Postgres/Blob de la même façon.
 
 ## 9. Modèle de données
 
@@ -249,15 +251,44 @@ Entités : `User` (compte, avec sous-objets `MailboxInfo` et `MfaInfo`) · `Lice
 | `npm run build` | Build de production |
 | `npm start` | Sert le build de production |
 | `npm test` | Exécute la suite de tests |
-| `npm run seed` | Réinitialise `data/db.json` depuis `data/seed.json` |
+| `npm run seed` | Amorce le store depuis `data/seed.json` — **Vercel KV** si configuré (clé `migrator:db`), sinon `data/db.json` |
 
 ## 13. Déploiement
 
-Conçue pour un usage **local**. Le store écrit dans `data/db.json` ; si le système de
-fichiers est en lecture seule (ex. fonction serverless), un **repli en mémoire** est
-automatique (les données ne sont alors pas persistées entre invocations). Pour un
-déploiement multi-utilisateurs persistant, basculer la couche `lib/data/store.ts` vers
-une base hébergée (voir [`CHECKLIST.md`](./CHECKLIST.md)).
+L'application se déploie sur **Vercel** (framework Next.js détecté automatiquement,
+build `npm run build`, Node 20+). La couche d'accès aux données (`lib/data/store.ts`)
+gère **deux back-ends derrière la même interface**, choisis automatiquement selon
+l'environnement :
+
+| Contexte | Back-end | Persistance |
+| --- | --- | --- |
+| **Développement local** (pas de variables KV) | Fichier `data/db.json` (repli mémoire si FS en lecture seule) | locale |
+| **Vercel** (variables KV présentes) | **Vercel KV (Redis)** — état complet sous la clé `migrator:db` | partagée entre instances |
+
+### Mise en place sur Vercel
+
+1. **Provisionner Vercel KV** : projet Vercel → onglet *Storage* → créer une base
+   **KV (Redis)** et la connecter au projet. Vercel injecte alors les variables
+   d'environnement `KV_REST_API_URL` et `KV_REST_API_TOKEN` (+ `KV_URL`, `REDIS_URL`).
+   > **Sécurité** : ces secrets vivent **uniquement** dans les *Environment Variables*
+   > du projet Vercel — jamais en clair dans le dépôt.
+2. **Amorcer les données** (une seule fois) avec le jeu de démonstration :
+   ```bash
+   vercel env pull .env.local     # récupère les variables KV en local
+   npm run seed                   # détecte KV → écrit data/seed.json sous "migrator:db"
+   ```
+   En l'absence d'amorçage, le store s'auto-amorce depuis `data/seed.json` au premier
+   accès en lecture (la clé est créée si elle n'existe pas).
+3. **Déployer** : un push sur la branche de production déclenche le build Vercel
+   (CI/CD si le dépôt GitHub est connecté au projet).
+
+> ⚠️ **Concurrence** : chaque écriture est un *read-modify-write* du document complet
+> (last-writer-wins), comme le modèle fichier d'origine — adapté à l'échelle d'une
+> petite équipe. Les évolutions ultérieures (entités séparées, verrouillage optimiste)
+> sont listées dans [`CHECKLIST.md`](./CHECKLIST.md).
+
+> **Alternatives** : le même schéma (un document `Database` unique) se prête aussi à
+> Vercel Postgres (Neon) ou Vercel Blob ; seul `lib/data/store.ts` serait à adapter.
 
 ## 14. Feuille de route
 

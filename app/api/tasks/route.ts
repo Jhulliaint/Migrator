@@ -5,5 +5,5 @@ import type { Task } from "@/lib/types";
 export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
-  return NextResponse.json(upsertTask((await req.json()) as Task));
+  return NextResponse.json(await upsertTask((await req.json()) as Task));
 }

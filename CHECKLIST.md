@@ -13,10 +13,15 @@ laissés en attente, avec l'emplacement prévu pour les brancher.
 - [ ] **Bascule DNS / MX** : action manuelle (Gandi). L'app suit le **statut** uniquement.
 
 ## Persistance & multi-utilisateurs
-- [ ] Passage du store JSON à **SQLite/Prisma ou Postgres** : ne toucher qu'à
-      `lib/data/store.ts` (interface `getDb/saveDb/mutate` déjà isolée).
+- [x] Store hébergé pour le déploiement Vercel : **Vercel KV (Redis)** branché dans
+      `lib/data/store.ts` (interface `getDb/saveDb/mutate` rendue asynchrone, repli
+      fichier local conservé). Voir §13 du README.
+- [ ] Migration éventuelle vers un modèle **relationnel** (Postgres/Neon) avec entités
+      séparées, si le volume ou les besoins de requêtage le justifient (aujourd'hui :
+      document `Database` unique).
 - [ ] **Authentification** + rôles (aujourd'hui auteur d'audit = « Julien » par défaut).
-- [ ] Verrouillage optimiste / multi-onglets (la V1 recharge l'état complet à chaque mutation).
+- [ ] Verrouillage optimiste / multi-onglets (la V1 recharge l'état complet à chaque
+      mutation ; les écritures KV sont en *last-writer-wins* sur le document complet).
 
 ## Communications
 - [ ] **Envoi réel** des emails (aujourd'hui : copier / télécharger .txt). Brancher un

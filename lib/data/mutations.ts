@@ -30,7 +30,7 @@ function stringify(v: unknown): string {
   return String(v);
 }
 
-export function updateUser(id: string, patch: Partial<User>, author?: string): Database {
+export function updateUser(id: string, patch: Partial<User>, author?: string): Promise<Database> {
   return mutate((db) => {
     const u = db.users.find((x) => x.id === id);
     if (!u) throw new Error("Utilisateur introuvable");
@@ -62,7 +62,7 @@ export function updateUser(id: string, patch: Partial<User>, author?: string): D
   });
 }
 
-export function createUser(user: User, author?: string): Database {
+export function createUser(user: User, author?: string): Promise<Database> {
   return mutate((db) => {
     db.users.push(user);
     appendAudit(db, {
@@ -76,7 +76,7 @@ export function createUser(user: User, author?: string): Database {
   });
 }
 
-export function deleteUser(id: string, author?: string): Database {
+export function deleteUser(id: string, author?: string): Promise<Database> {
   return mutate((db) => {
     const idx = db.users.findIndex((x) => x.id === id);
     if (idx < 0) return;
@@ -92,7 +92,7 @@ export function deleteUser(id: string, author?: string): Database {
   });
 }
 
-export function updateLicenseType(code: string, patch: Partial<LicenseType>, author?: string): Database {
+export function updateLicenseType(code: string, patch: Partial<LicenseType>, author?: string): Promise<Database> {
   return mutate((db) => {
     const lt = db.licenseTypes.find((x) => x.code === code);
     if (!lt) throw new Error("Profil introuvable");
@@ -108,7 +108,7 @@ export function updateLicenseType(code: string, patch: Partial<LicenseType>, aut
   });
 }
 
-export function updateSettings(patch: Partial<Settings>, author?: string): Database {
+export function updateSettings(patch: Partial<Settings>, author?: string): Promise<Database> {
   return mutate((db) => {
     appendAudit(db, {
       author,
@@ -123,7 +123,7 @@ export function updateSettings(patch: Partial<Settings>, author?: string): Datab
 }
 
 // --- Tâches -----------------------------------------------------------------
-export function upsertTask(task: Task, author?: string): Database {
+export function upsertTask(task: Task, author?: string): Promise<Database> {
   return mutate((db) => {
     const idx = db.tasks.findIndex((t) => t.id === task.id);
     if (idx >= 0) db.tasks[idx] = task;
@@ -133,42 +133,42 @@ export function upsertTask(task: Task, author?: string): Database {
     }
   });
 }
-export function deleteTask(id: string): Database {
+export function deleteTask(id: string): Promise<Database> {
   return mutate((db) => {
     db.tasks = db.tasks.filter((t) => t.id !== id);
   });
 }
 
 // --- Risques manuels --------------------------------------------------------
-export function upsertRisk(risk: Risk): Database {
+export function upsertRisk(risk: Risk): Promise<Database> {
   return mutate((db) => {
     const idx = db.risks.findIndex((r) => r.id === risk.id);
     if (idx >= 0) db.risks[idx] = risk;
     else db.risks.push(risk);
   });
 }
-export function deleteRisk(id: string): Database {
+export function deleteRisk(id: string): Promise<Database> {
   return mutate((db) => {
     db.risks = db.risks.filter((r) => r.id !== id);
   });
 }
 
 // --- Listes de distribution -------------------------------------------------
-export function upsertDistributionList(dl: DistributionList): Database {
+export function upsertDistributionList(dl: DistributionList): Promise<Database> {
   return mutate((db) => {
     const idx = db.distributionLists.findIndex((d) => d.id === dl.id);
     if (idx >= 0) db.distributionLists[idx] = dl;
     else db.distributionLists.push(dl);
   });
 }
-export function deleteDistributionList(id: string): Database {
+export function deleteDistributionList(id: string): Promise<Database> {
   return mutate((db) => {
     db.distributionLists = db.distributionLists.filter((d) => d.id !== id);
   });
 }
 
 // --- Jalons -----------------------------------------------------------------
-export function updateMilestone(id: string, patch: Partial<Milestone>): Database {
+export function updateMilestone(id: string, patch: Partial<Milestone>): Promise<Database> {
   return mutate((db) => {
     const m = db.milestones.find((x) => x.id === id);
     if (m) Object.assign(m, patch);
@@ -176,7 +176,7 @@ export function updateMilestone(id: string, patch: Partial<Milestone>): Database
 }
 
 // --- Import (fusion d'utilisateurs par email) -------------------------------
-export function importUsers(incoming: User[], mode: "merge" | "replace", author?: string): Database {
+export function importUsers(incoming: User[], mode: "merge" | "replace", author?: string): Promise<Database> {
   return mutate((db) => {
     if (mode === "replace") {
       db.users = incoming;

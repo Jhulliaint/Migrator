@@ -5,5 +5,5 @@ import { getDb } from "@/lib/data/store";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  return NextResponse.json(getDb());
+  return NextResponse.json(await getDb());
 }

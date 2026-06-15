@@ -8,6 +8,26 @@ versionnement suit [SemVer](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+### Ajouté
+- **Suppression d'utilisateurs depuis la liste** : icône 🗑 par ligne (avec
+  confirmation) et **suppression groupée** dans la barre d'édition en masse — en
+  complément du bouton déjà présent dans le panneau de détail.
+- **Édition des statuts depuis la liste** : le statut de compte devient un menu
+  déroulant **éditable en ligne** ; la barre d'édition en masse gère désormais aussi le
+  **statut de compte** et le **risque** (en plus du profil de licence, du statut de
+  migration et de l'engagement).
+
+### Données
+- **Reseed complet depuis le fichier de migration réel** (`MAGE SAS`) via le nouveau
+  script `scripts/build_seed_mage.mjs` : **39 utilisateurs** réels (dont 9 boîtes
+  partagées), répartition des licences fidèle à l'Excel (P1×11, P4a×8, P3×5, P4b×3,
+  P2×3, partagées×9), **liens de boîtes partagées** (membres ↔ boîtes) reconstruits, la
+  liste de distribution **« Fermeture »**, le risque par défaut déduit de la taille de
+  boîte (> 100 Go = rouge, > 50 Go = orange) et le fournisseur DNS positionné sur
+  **WIX**. Les mots de passe de l'Excel ne sont jamais lus ni stockés (cf. CLAUDE.md).
+  En production (Vercel KV), appliquer le nouveau jeu via **Paramètres → Réinitialiser**
+  ou `npm run seed`.
+
 ### Modifié
 - **Persistance / déploiement Vercel** : la couche d'accès aux données
   (`lib/data/store.ts`) gère désormais **deux back-ends derrière la même interface**,

@@ -75,6 +75,18 @@ function riskForSize(gb) {
   return "vert";
 }
 
+/** Applications Office par défaut selon le profil de licence (modifiable ensuite). */
+function officeAppsFor(licenseProfile, isService) {
+  if (isService) return [];
+  switch (licenseProfile) {
+    case "P1": return ["Outlook", "Word", "Excel", "PowerPoint", "Teams", "OneDrive"];
+    case "P2": return ["Outlook", "Word", "Excel", "Teams", "OneDrive"];
+    case "P3": return ["Outlook", "Teams"];
+    case "SHARED": return [];
+    default: return ["Outlook"]; // P4a / P4b : Exchange seul
+  }
+}
+
 // --- Lecture Excel ----------------------------------------------------------
 const wb = XLSX.readFile(xlsxPath);
 
@@ -137,6 +149,7 @@ for (const r of rows) {
     usesOutlookWeb: consultation.includes("owa") || consultation.includes("webmail"),
     usesOutlookDesktop: /oui|installé|x/i.test(String(r["Outlook installé ?"] ?? "")),
     usesMobile: false,
+    officeApps: officeAppsFor(licenseProfile, isService),
     os: osFor(r["OS windows/mac?"]),
     lastGoogleSignIn: null,
     mailboxSizeGB: size,
@@ -144,6 +157,7 @@ for (const r of rows) {
     cleanupRequested: false,
     cleanupDone: false,
     mailStatus: "non commencé",
+    msAccountStatus: "à prévenir",
     mfa: {
       status: "non démarrée", method: "non défini", configured: false, configuredAt: null,
       blocked: false, needsAssistance: false, instructionSent: false, firstSignInDone: false,

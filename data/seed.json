@@ -15,6 +15,7 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 7.36,
@@ -22,6 +23,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -73,6 +75,10 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [
+        "Outlook",
+        "Teams"
+      ],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 31.87,
@@ -80,6 +86,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -128,6 +135,10 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [
+        "Outlook",
+        "Teams"
+      ],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 0.11,
@@ -135,6 +146,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -183,6 +195,13 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [
+        "Outlook",
+        "Word",
+        "Excel",
+        "Teams",
+        "OneDrive"
+      ],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 0.4,
@@ -190,6 +209,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -238,6 +258,7 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 53.2,
@@ -245,6 +266,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -293,6 +315,7 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 4.95,
@@ -300,6 +323,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -348,6 +372,9 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [
+        "Outlook"
+      ],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 116.36,
@@ -355,6 +382,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -403,6 +431,7 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 31.56,
@@ -410,6 +439,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -458,6 +488,7 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 9.3,
@@ -465,6 +496,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -513,6 +545,7 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 0.1,
@@ -520,6 +553,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -572,6 +606,14 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [
+        "Outlook",
+        "Word",
+        "Excel",
+        "PowerPoint",
+        "Teams",
+        "OneDrive"
+      ],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 25.34,
@@ -579,6 +621,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -633,6 +676,7 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 0.29,
@@ -640,6 +684,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -688,6 +733,7 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 75.7,
@@ -695,6 +741,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -745,6 +792,10 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [
+        "Outlook",
+        "Teams"
+      ],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 14.46,
@@ -752,6 +803,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -800,6 +852,10 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [
+        "Outlook",
+        "Teams"
+      ],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 25.93,
@@ -807,6 +863,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -855,6 +912,9 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [
+        "Outlook"
+      ],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 27.7,
@@ -862,6 +922,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -910,6 +971,7 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 0.98,
@@ -917,6 +979,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -967,6 +1030,10 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [
+        "Outlook",
+        "Teams"
+      ],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 31.78,
@@ -974,6 +1041,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -1022,6 +1090,9 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [
+        "Outlook"
+      ],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 9.37,
@@ -1029,6 +1100,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -1077,6 +1149,14 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [
+        "Outlook",
+        "Word",
+        "Excel",
+        "PowerPoint",
+        "Teams",
+        "OneDrive"
+      ],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 16.73,
@@ -1084,6 +1164,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -1135,6 +1216,14 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [
+        "Outlook",
+        "Word",
+        "Excel",
+        "PowerPoint",
+        "Teams",
+        "OneDrive"
+      ],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 22.58,
@@ -1142,6 +1231,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -1192,6 +1282,7 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 28.81,
@@ -1199,6 +1290,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -1249,6 +1341,7 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 16.07,
@@ -1256,6 +1349,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -1304,6 +1398,7 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 30.29,
@@ -1311,6 +1406,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -1359,6 +1455,7 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 31.6,
@@ -1366,6 +1463,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -1414,6 +1512,7 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 37.41,
@@ -1421,6 +1520,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -1469,6 +1569,14 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [
+        "Outlook",
+        "Word",
+        "Excel",
+        "PowerPoint",
+        "Teams",
+        "OneDrive"
+      ],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 39.98,
@@ -1476,6 +1584,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -1531,6 +1640,14 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [
+        "Outlook",
+        "Word",
+        "Excel",
+        "PowerPoint",
+        "Teams",
+        "OneDrive"
+      ],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 21.37,
@@ -1538,6 +1655,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -1588,6 +1706,9 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [
+        "Outlook"
+      ],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 9,
@@ -1595,6 +1716,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -1643,6 +1765,13 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [
+        "Outlook",
+        "Word",
+        "Excel",
+        "Teams",
+        "OneDrive"
+      ],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 1.28,
@@ -1650,6 +1779,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -1698,6 +1828,9 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [
+        "Outlook"
+      ],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 0.23,
@@ -1705,6 +1838,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -1755,6 +1889,7 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 2.36,
@@ -1762,6 +1897,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -1810,6 +1946,13 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [
+        "Outlook",
+        "Word",
+        "Excel",
+        "Teams",
+        "OneDrive"
+      ],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 0.09,
@@ -1817,6 +1960,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -1865,6 +2009,14 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [
+        "Outlook",
+        "Word",
+        "Excel",
+        "PowerPoint",
+        "Teams",
+        "OneDrive"
+      ],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 132.78,
@@ -1872,6 +2024,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -1920,6 +2073,7 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 29.82,
@@ -1927,6 +2081,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -1977,6 +2132,7 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 28.59,
@@ -1984,6 +2140,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -2034,6 +2191,7 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 0.7,
@@ -2041,6 +2199,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -2092,6 +2251,7 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 2.9,
@@ -2099,6 +2259,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",
@@ -2150,6 +2311,7 @@
       "usesOutlookWeb": true,
       "usesOutlookDesktop": false,
       "usesMobile": false,
+      "officeApps": [],
       "os": "Windows",
       "lastGoogleSignIn": null,
       "mailboxSizeGB": 68.23,
@@ -2157,6 +2319,7 @@
       "cleanupRequested": false,
       "cleanupDone": false,
       "mailStatus": "non commencé",
+      "msAccountStatus": "à prévenir",
       "mfa": {
         "status": "non démarrée",
         "method": "non défini",

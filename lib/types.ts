@@ -47,6 +47,25 @@ export type CommStatus =
   | "relancé"
   | "confirmé";
 
+/** Statut de connexion / activation du compte Microsoft 365. */
+export type MsAccountStatus =
+  | "à prévenir"
+  | "mot de passe envoyé"
+  | "première connexion faite"
+  | "connexion confirmée"
+  | "bloqué";
+
+/** Applications du pack Office / Microsoft 365 réellement utilisées. */
+export type OfficeApp =
+  | "Outlook"
+  | "Word"
+  | "Excel"
+  | "PowerPoint"
+  | "Teams"
+  | "OneDrive"
+  | "SharePoint"
+  | "OneNote";
+
 /** Système d'exploitation principal. */
 export type OsType = "Windows" | "Mac" | "inconnu";
 
@@ -132,6 +151,8 @@ export interface User {
   usesOutlookWeb: boolean;
   usesOutlookDesktop: boolean;
   usesMobile: boolean;
+  /** Applications du pack Office réellement utilisées par l'utilisateur. */
+  officeApps: OfficeApp[];
   os: OsType;
   lastGoogleSignIn: string | null;
   /** Taille actuelle de la boîte mail (Go). */
@@ -143,6 +164,8 @@ export interface User {
   mailStatus: MailMigrationStatus;
   mfa: MfaInfo;
   commStatus: CommStatus;
+  /** Statut de connexion / activation du compte Microsoft. */
+  msAccountStatus: MsAccountStatus;
   remarks: string;
   /** Liens vers boîtes partagées / boîtes d'activité associées. */
   linkedMailboxes: string[];

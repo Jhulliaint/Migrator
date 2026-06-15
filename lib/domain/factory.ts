@@ -18,6 +18,7 @@ export function makeUser(partial: Partial<User> & { firstName: string; lastName:
     usesOutlookWeb: partial.usesOutlookWeb ?? true,
     usesOutlookDesktop: partial.usesOutlookDesktop ?? false,
     usesMobile: partial.usesMobile ?? false,
+    officeApps: partial.officeApps ?? [],
     os: partial.os ?? "inconnu",
     lastGoogleSignIn: partial.lastGoogleSignIn ?? null,
     mailboxSizeGB: partial.mailboxSizeGB ?? 0,
@@ -25,6 +26,7 @@ export function makeUser(partial: Partial<User> & { firstName: string; lastName:
     cleanupRequested: partial.cleanupRequested ?? false,
     cleanupDone: partial.cleanupDone ?? false,
     mailStatus: partial.mailStatus ?? "non commencé",
+    msAccountStatus: partial.msAccountStatus ?? "à prévenir",
     mfa: partial.mfa ?? {
       status: "non démarrée", method: "non défini", configured: false, configuredAt: null,
       blocked: false, needsAssistance: false, instructionSent: false, firstSignInDone: false,
